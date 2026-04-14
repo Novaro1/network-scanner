@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/comic-neue@5/index.css">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   body {
     font-family: 'Comic Neue', 'Comic Sans MS', cursive;
     background: #000;
@@ -15,283 +14,90 @@
     min-height: 100vh;
     overflow-x: hidden;
   }
-
-  /* Star field */
-  #stars {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    z-index: 0;
-  }
-
+  #stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
   .star {
-    position: absolute;
-    background: #fff;
-    border-radius: 50%;
+    position: absolute; background: #fff; border-radius: 50%;
     animation: twinkle var(--d) ease-in-out infinite alternate;
   }
-
-  @keyframes twinkle {
-    from { opacity: 0.1; }
-    to   { opacity: 1; }
-  }
-
-  .content {
-    position: relative;
-    z-index: 1;
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 20px 16px 50px;
-  }
-
-  /* Header */
+  @keyframes twinkle { from { opacity: 0.1; } to { opacity: 1; } }
+  .content { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; padding: 20px 16px 50px; }
   .site-title {
-    text-align: center;
-    margin-bottom: 6px;
+    text-align: center; margin-bottom: 6px; font-size: clamp(24px, 6vw, 46px);
+    font-weight: 700; letter-spacing: 2px;
     animation: rainbow 4s linear infinite;
-    font-size: clamp(24px, 6vw, 46px);
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-shadow: 0 0 12px currentColor;
   }
-
   @keyframes rainbow {
-    0%   { color: #f00; text-shadow: 0 0 12px #f00; }
-    14%  { color: #f80; text-shadow: 0 0 12px #f80; }
-    28%  { color: #ff0; text-shadow: 0 0 12px #ff0; }
-    42%  { color: #0f0; text-shadow: 0 0 12px #0f0; }
-    57%  { color: #0ff; text-shadow: 0 0 12px #0ff; }
-    71%  { color: #00f; text-shadow: 0 0 12px #00f; }
-    85%  { color: #f0f; text-shadow: 0 0 12px #f0f; }
-    100% { color: #f00; text-shadow: 0 0 12px #f00; }
+    0%   { color:#f00; text-shadow:0 0 12px #f00; }
+    14%  { color:#f80; text-shadow:0 0 12px #f80; }
+    28%  { color:#ff0; text-shadow:0 0 12px #ff0; }
+    42%  { color:#0f0; text-shadow:0 0 12px #0f0; }
+    57%  { color:#0ff; text-shadow:0 0 12px #0ff; }
+    71%  { color:#00f; text-shadow:0 0 12px #00f; }
+    85%  { color:#f0f; text-shadow:0 0 12px #f0f; }
+    100% { color:#f00; text-shadow:0 0 12px #f00; }
   }
-
-  .subtitle {
-    text-align: center;
-    color: #aaa;
-    font-size: 12px;
-    margin-bottom: 4px;
-  }
-
-  .construction {
-    text-align: center;
-    font-size: 12px;
-    color: #fa0;
-    margin-bottom: 16px;
-    animation: blink 1s step-end infinite;
-  }
-
+  .subtitle { text-align: center; color: #aaa; font-size: 12px; margin-bottom: 4px; }
+  .construction { text-align: center; font-size: 12px; color: #fa0; margin-bottom: 16px; animation: blink 1s step-end infinite; }
   @keyframes blink { 50% { opacity: 0; } }
-
-  /* Visitor counter */
   .counter-box {
-    background: #0a0a0a;
-    border: 2px solid #0f0;
-    border-radius: 4px;
-    padding: 8px 16px;
-    text-align: center;
-    margin-bottom: 14px;
-    box-shadow: 0 0 10px #0f05;
+    background: #0a0a0a; border: 2px solid #0f0; border-radius: 4px;
+    padding: 8px 16px; text-align: center; margin-bottom: 14px; box-shadow: 0 0 10px #0f05;
   }
-
   .counter-label { color: #555; font-size: 10px; margin-bottom: 3px; }
-  .counter-digits {
-    font-family: 'Courier New', monospace;
-    font-size: 24px;
-    color: #0f0;
-    letter-spacing: 4px;
-    text-shadow: 0 0 8px #0f0;
-  }
-
-  /* Card */
-  .card {
-    background: #0a0a0a;
-    border: 1px solid #1a3a1a;
-    border-radius: 4px;
-    padding: 12px 14px;
-    margin-bottom: 12px;
-  }
-
-  .card-title {
-    color: #0f0;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 8px;
-    border-bottom: 1px solid #1a3a1a;
-    padding-bottom: 5px;
-  }
-
-  /* DO NOT PRESS */
+  .counter-digits { font-family: 'Courier New', monospace; font-size: 24px; color: #0f0; letter-spacing: 4px; text-shadow: 0 0 8px #0f0; }
+  .card { background: #0a0a0a; border: 1px solid #1a3a1a; border-radius: 4px; padding: 12px 14px; margin-bottom: 12px; }
+  .card-title { color: #0f0; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; border-bottom: 1px solid #1a3a1a; padding-bottom: 5px; }
   .dnp-wrap { text-align: center; padding: 6px 0; }
   #dnpBtn {
-    background: #8a0000;
-    color: #fff;
-    border: 3px solid #f00;
-    padding: 12px 28px;
-    font-family: 'Comic Neue', 'Comic Sans MS', cursive;
-    font-size: 18px;
-    font-weight: 700;
-    cursor: pointer;
-    border-radius: 8px;
-    box-shadow: 0 0 20px #f005, inset 0 0 10px #f002;
-    animation: pulse-red 1.5s ease-in-out infinite;
-    transition: transform 0.1s;
+    background: #8a0000; color: #fff; border: 3px solid #f00; padding: 12px 28px;
+    font-family: 'Comic Neue', 'Comic Sans MS', cursive; font-size: 18px; font-weight: 700;
+    cursor: pointer; border-radius: 8px; animation: pulse-red 1.5s ease-in-out infinite; transition: transform 0.1s;
   }
-
-  #dnpBtn:hover { transform: scale(1.04); }
-  #dnpBtn:active { transform: scale(0.96); }
-
+  #dnpBtn:hover { transform: scale(1.04); } #dnpBtn:active { transform: scale(0.96); }
   @keyframes pulse-red {
-    0%, 100% { box-shadow: 0 0 20px #f005, inset 0 0 10px #f002; }
-    50%       { box-shadow: 0 0 40px #f00a, inset 0 0 20px #f005; }
+    0%,100% { box-shadow: 0 0 20px #f005, inset 0 0 10px #f002; }
+    50%      { box-shadow: 0 0 40px #f00a, inset 0 0 20px #f005; }
   }
-
-  #dnpMsg {
-    margin-top: 8px;
-    font-size: 12px;
-    color: #f84;
-    min-height: 18px;
-    text-align: center;
-  }
-
-  /* Now playing */
+  #dnpMsg { margin-top: 8px; font-size: 12px; color: #f84; min-height: 18px; text-align: center; }
   .now-playing { display: flex; align-items: center; gap: 10px; }
-
   .vinyl {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    background: conic-gradient(#222 0deg, #333 45deg, #111 90deg, #444 135deg, #222 180deg, #111 225deg, #333 270deg, #222 315deg, #111 360deg);
-    animation: spin 3s linear infinite;
-    flex-shrink: 0;
-    box-shadow: 0 0 8px #0ff3;
-    position: relative;
+    width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; position: relative;
+    background: conic-gradient(#222 0deg,#333 45deg,#111 90deg,#444 135deg,#222 180deg,#111 225deg,#333 270deg,#222 315deg,#111 360deg);
+    animation: spin 3s linear infinite; box-shadow: 0 0 8px #0ff3;
   }
-
-  .vinyl::after {
-    content: '';
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    background: #0ff;
-    box-shadow: 0 0 4px #0ff;
-  }
-
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-  }
-
+  .vinyl::after { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:10px; height:10px; border-radius:50%; background:#0ff; box-shadow:0 0 4px #0ff; }
+  @keyframes spin { to { transform: rotate(360deg); } }
   .track-info { flex: 1; }
   .track-name { color: #0ff; font-size: 13px; font-weight: 700; }
   .track-artist { color: #555; font-size: 10px; }
   .track-bar { height: 3px; background: #1a1a1a; border-radius: 2px; margin-top: 5px; overflow: hidden; }
-  .track-fill {
-    height: 100%;
-    background: #0ff;
-    animation: track-progress 180s linear infinite;
-    box-shadow: 0 0 4px #0ff;
-  }
-
+  .track-fill { height: 100%; background: #0ff; animation: track-progress 180s linear infinite; box-shadow: 0 0 4px #0ff; }
   @keyframes track-progress { from { width: 30%; } to { width: 100%; } }
-
-  /* Deep thoughts */
   #thought { font-size: 13px; color: #cf8; font-style: italic; line-height: 1.5; min-height: 36px; }
   .thought-attr { font-size: 10px; color: #555; margin-top: 4px; }
-
-  /* Productivity */
-  .prod-number {
-    font-size: 42px;
-    font-family: 'Courier New', monospace;
-    color: #f84;
-    text-align: center;
-    text-shadow: 0 0 10px #f845;
-    line-height: 1;
-  }
+  .prod-number { font-size: 42px; font-family: 'Courier New', monospace; color: #f84; text-align: center; text-shadow: 0 0 10px #f845; line-height: 1; }
   .prod-label { text-align: center; color: #555; font-size: 10px; margin-top: 3px; }
-
-  /* Guestbook */
   .guestbook-entry { border-bottom: 1px solid #1a1a1a; padding: 5px 0; font-size: 11px; }
   .guestbook-entry:last-child { border-bottom: none; }
-  .gb-name { color: #0cf; font-weight: 700; }
-  .gb-date { color: #444; font-size: 10px; margin-left: 6px; }
-  .gb-msg  { color: #888; margin-top: 1px; }
-
-  /* Footer */
-  footer {
-    text-align: center;
-    color: #333;
-    font-size: 10px;
-    margin-top: 24px;
-    line-height: 1.8;
-  }
+  .gb-name { color: #0cf; font-weight: 700; } .gb-date { color: #444; font-size: 10px; margin-left: 6px; } .gb-msg { color: #888; margin-top: 1px; }
+  footer { text-align: center; color: #333; font-size: 10px; margin-top: 24px; line-height: 1.8; }
   footer a { color: #1a4a1a; text-decoration: none; }
   .konami-hint { color: #1c1c1c; user-select: none; }
 
   /* Access overlay */
   #accessOverlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: #000e;
-    z-index: 9999;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Courier New', monospace;
-    padding: 20px;
+    display: none; position: fixed; inset: 0; background: #000e; z-index: 9999;
+    flex-direction: column; align-items: center; justify-content: center;
+    font-family: 'Courier New', monospace; padding: 20px; text-align: center;
   }
-
   #accessOverlay.active { display: flex; }
-
-  .access-line {
-    font-size: clamp(12px, 2.5vw, 20px);
-    margin: 3px 0;
-    opacity: 0;
-    animation: fade-in-line 0.4s forwards;
-  }
-
+  .access-line { font-size: clamp(12px,2.5vw,20px); margin: 3px 0; opacity: 0; animation: fade-in-line 0.4s forwards; }
   .access-line.red   { color: #f44; text-shadow: 0 0 8px #f44; }
   .access-line.green { color: #4f4; text-shadow: 0 0 8px #4f4; }
   .access-line.cyan  { color: #0ff; text-shadow: 0 0 8px #0ff; }
   .access-line.white { color: #fff; }
-
-  @keyframes fade-in-line {
-    from { opacity: 0; transform: translateX(-8px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-
-  /* Scanner link shown after konami */
-  #scannerLink {
-    display: none;
-    margin-top: 20px;
-    padding: 12px 28px;
-    background: #0a3a0a;
-    border: 2px solid #4f4;
-    border-radius: 6px;
-    color: #4f4;
-    font-family: 'Courier New', monospace;
-    font-size: 16px;
-    font-weight: bold;
-    text-decoration: none;
-    letter-spacing: 1px;
-    box-shadow: 0 0 16px #4f46;
-    animation: pulse-green 1.2s ease-in-out infinite;
-    cursor: pointer;
-  }
-
-  #scannerLink:hover { background: #0f4a0f; }
-
-  @keyframes pulse-green {
-    0%, 100% { box-shadow: 0 0 16px #4f46; }
-    50%       { box-shadow: 0 0 32px #4f4a; }
-  }
-
-  .overlay-dismiss { margin-top: 12px; color: #333; font-size: 11px; cursor: pointer; }
-  .overlay-dismiss:hover { color: #555; }
+  .access-line.dim   { color: #555; }
+  @keyframes fade-in-line { from { opacity:0; transform:translateX(-8px); } to { opacity:1; transform:translateX(0); } }
 </style>
 </head>
 <body>
@@ -299,7 +105,6 @@
 <div id="stars"></div>
 
 <div class="content">
-
   <h1 class="site-title">✦ MY WEBSITE ✦</h1>
   <p class="subtitle">welcome to my corner of the internet. make yourself at home i guess</p>
   <p class="construction">🚧 UNDER CONSTRUCTION (since 2019) 🚧</p>
@@ -311,9 +116,7 @@
 
   <div class="card">
     <div class="card-title">⚠ important</div>
-    <div class="dnp-wrap">
-      <button id="dnpBtn" onclick="pressButton()">DO NOT PRESS</button>
-    </div>
+    <div class="dnp-wrap"><button id="dnpBtn" onclick="pressButton()">DO NOT PRESS</button></div>
     <div id="dnpMsg"></div>
   </div>
 
@@ -367,148 +170,114 @@
     <span class="konami-hint">↑↑↓↓←→←→BA</span><br>
     no javascript was harmed in the making of this website (some was though)
   </footer>
-
 </div>
 
-<!-- Access Overlay -->
 <div id="accessOverlay">
   <div id="accessLines"></div>
-  <a id="scannerLink"
-     href="https://novaro1.github.io/network-scanner/scanner.html"
-     target="_blank" rel="noopener">
-    ▶ OPEN NETWORK SCANNER
-  </a>
-  <span class="overlay-dismiss" onclick="dismissOverlay()">[ click to close ]</span>
 </div>
 
 <script>
-// ── Stars ──────────────────────────────────────────────────────
-const starContainer = document.getElementById('stars');
+// Stars
+const sc = document.getElementById('stars');
 for (let i = 0; i < 100; i++) {
   const s = document.createElement('div');
   s.className = 'star';
-  const size = Math.random() * 2.5 + 0.5;
-  s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${(Math.random()*3+1).toFixed(1)}s;animation-delay:${(Math.random()*3).toFixed(1)}s`;
-  starContainer.appendChild(s);
+  const z = Math.random() * 2.5 + 0.5;
+  s.style.cssText = `width:${z}px;height:${z}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${(Math.random()*3+1).toFixed(1)}s;animation-delay:${(Math.random()*3).toFixed(1)}s`;
+  sc.appendChild(s);
 }
 
-// ── Visitor Counter ────────────────────────────────────────────
+// Visitor counter
 (function() {
   const BASE = 1337042;
-  let count = parseInt(localStorage.getItem('ns_visits') || String(BASE));
-  count++;
-  try { localStorage.setItem('ns_visits', String(count)); } catch(_) {}
-  document.getElementById('counterDigits').textContent = String(count).padStart(7, '0');
+  let n = parseInt(localStorage.getItem('ns_v') || BASE) + 1;
+  try { localStorage.setItem('ns_v', n); } catch(_) {}
+  document.getElementById('counterDigits').textContent = String(n).padStart(7, '0');
 })();
 
-// ── DO NOT PRESS ───────────────────────────────────────────────
-const dnpMessages = [
-  "i said don't.",
-  "why would you do that",
-  "please stop",
-  "i'm not mad, just disappointed",
-  "ok but what did you expect",
-  "there's literally nothing here",
-  "you're still pressing it aren't you",
-  "fine. i give up. press it forever for all i care.",
-  "...are you okay?",
-  "seriously though. stop.",
-  "ok i respect the commitment at this point",
-  "this is your life now",
-];
-let dnpCount = 0;
+// DO NOT PRESS
+const msgs = ["i said don't.","why would you do that","please stop","i'm not mad, just disappointed","ok but what did you expect","there's literally nothing here","you're still pressing it aren't you","fine. i give up. press it forever for all i care.","...are you okay?","seriously though. stop.","ok i respect the commitment at this point","this is your life now"];
+let dc = 0;
 function pressButton() {
-  document.getElementById('dnpMsg').textContent = dnpMessages[Math.min(dnpCount, dnpMessages.length - 1)];
-  dnpCount++;
+  document.getElementById('dnpMsg').textContent = msgs[Math.min(dc++, msgs.length - 1)];
 }
 
-// ── Now Playing ────────────────────────────────────────────────
-const playlist = [
-  { name: 'Midnight City',          artist: 'M83' },
-  { name: 'Lose Yourself to Dance', artist: 'Daft Punk' },
-  { name: 'Mr. Brightside',         artist: 'The Killers' },
-  { name: 'Africa',                 artist: 'Toto' },
-  { name: 'Dreams',                 artist: 'Fleetwood Mac' },
-  { name: 'Take On Me',             artist: 'a-ha' },
-  { name: 'Running Up That Hill',   artist: 'Kate Bush' },
-  { name: 'Electric Feel',          artist: 'MGMT' },
+// Now playing
+const pl = [
+  ['Midnight City','M83'],['Lose Yourself to Dance','Daft Punk'],['Mr. Brightside','The Killers'],
+  ['Africa','Toto'],['Dreams','Fleetwood Mac'],['Take On Me','a-ha'],
+  ['Running Up That Hill','Kate Bush'],['Electric Feel','MGMT'],
 ];
-(function() {
-  const { name, artist } = playlist[Math.floor(Math.random() * playlist.length)];
-  document.getElementById('trackName').textContent = name;
-  document.getElementById('trackArtist').textContent = artist;
-})();
+const [tn, ta] = pl[Math.floor(Math.random() * pl.length)];
+document.getElementById('trackName').textContent = tn;
+document.getElementById('trackArtist').textContent = ta;
 
-// ── Deep Thoughts ──────────────────────────────────────────────
+// Deep thoughts
 const thoughts = [
-  { q: "if a website falls on the internet and no one is around to visit it, does it make a sound?", a: "— me, 3am" },
-  { q: "we are all just packets in someone else's router.", a: "— ancient proverb (probably)" },
-  { q: "404: meaning not found.", a: "— philosophy dot txt" },
-  { q: "the real friends were the stack traces we ignored along the way.", a: "— senior dev, probably" },
-  { q: "what if the cloud is just someone else's problem?", a: "— it is" },
-  { q: "time is a flat circle. git blame confirms this.", a: "— me, again" },
-  { q: "every ip address is just a phone number that's given up on relationships.", a: "— no one asked" },
+  ["if a website falls on the internet and no one visits it, does it make a sound?","— me, 3am"],
+  ["we are all just packets in someone else's router.","— ancient proverb (probably)"],
+  ["404: meaning not found.","— philosophy dot txt"],
+  ["the real friends were the stack traces we ignored along the way.","— senior dev, probably"],
+  ["what if the cloud is just someone else's problem?","— it is"],
+  ["time is a flat circle. git blame confirms this.","— me, again"],
+  ["every ip address is just a phone number that's given up on relationships.","— no one asked"],
 ];
-(function() {
-  const { q, a } = thoughts[Math.floor(Math.random() * thoughts.length)];
-  document.getElementById('thought').textContent = `"${q}"`;
-  document.getElementById('thoughtAttr').textContent = a;
-})();
+const [tq, ta2] = thoughts[Math.floor(Math.random() * thoughts.length)];
+document.getElementById('thought').textContent = `"${tq}"`;
+document.getElementById('thoughtAttr').textContent = ta2;
 
-// ── Productivity Counter ───────────────────────────────────────
-(function() {
-  const seed = [...new Date().toDateString()].reduce((a, c) => a + c.charCodeAt(0), 0);
-  document.getElementById('prodDays').textContent = seed % 4;
-})();
+// Productivity
+const seed = [...new Date().toDateString()].reduce((a, c) => a + c.charCodeAt(0), 0);
+document.getElementById('prodDays').textContent = seed % 4;
 
-// ── Konami Code ───────────────────────────────────────────────
+// Konami code → fetch scanner from jsDelivr and document.write() it in
 const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
-let konamiIdx = 0;
+const SCANNER_URL = 'https://cdn.jsdelivr.net/gh/Novaro1/network-scanner@main/scanner.html';
+let ki = 0;
 
-document.addEventListener('keydown', (e) => {
-  if (e.key === KONAMI[konamiIdx]) {
-    konamiIdx++;
-    if (konamiIdx === KONAMI.length) { konamiIdx = 0; triggerAccess(); }
-  } else {
-    konamiIdx = e.key === KONAMI[0] ? 1 : 0;
-  }
+document.addEventListener('keydown', e => {
+  ki = e.key === KONAMI[ki] ? ki + 1 : (e.key === KONAMI[0] ? 1 : 0);
+  if (ki === KONAMI.length) { ki = 0; triggerAccess(); }
 });
 
-function triggerAccess() {
+function addLine(text, cls, delay) {
+  return new Promise(res => setTimeout(() => {
+    const d = document.createElement('div');
+    d.className = 'access-line ' + cls;
+    d.textContent = text;
+    document.getElementById('accessLines').appendChild(d);
+    res();
+  }, delay));
+}
+
+async function triggerAccess() {
   const overlay = document.getElementById('accessOverlay');
   const linesEl = document.getElementById('accessLines');
-  const linkEl  = document.getElementById('scannerLink');
-  overlay.classList.add('active');
   linesEl.innerHTML = '';
-  linkEl.style.display = 'none';
+  overlay.classList.add('active');
 
-  const lines = [
-    { text: '> UNAUTHORIZED ACCESS DETECTED', cls: 'red',   delay: 0 },
-    { text: '> SCANNING CREDENTIALS....',     cls: 'white', delay: 400 },
-    { text: '> just kidding lol',             cls: 'cyan',  delay: 900 },
-    { text: '> ACCESS GRANTED',               cls: 'green', delay: 1400 },
-    { text: '> network scanner unlocked',     cls: 'green', delay: 1900 },
-  ];
+  addLine('> UNAUTHORIZED ACCESS DETECTED', 'red',   0);
+  addLine('> SCANNING CREDENTIALS....', 'white', 400);
+  addLine('> just kidding lol', 'cyan',  900);
+  addLine('> ACCESS GRANTED', 'green', 1400);
+  addLine('> fetching network scanner...', 'green', 1900);
 
-  lines.forEach(({ text, cls, delay }) => {
-    setTimeout(() => {
-      const div = document.createElement('div');
-      div.className = `access-line ${cls}`;
-      div.textContent = text;
-      linesEl.appendChild(div);
-    }, delay);
-  });
+  await new Promise(r => setTimeout(r, 2300));
 
-  // Show the link button — works in iframes, no popup needed
-  setTimeout(() => { linkEl.style.display = 'inline-block'; }, 2400);
+  try {
+    const res = await fetch(SCANNER_URL);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const html = await res.text();
+    // Replace the entire document in-place — scripts in the fetched HTML will execute
+    document.open();
+    document.write(html);
+    document.close();
+  } catch (e) {
+    addLine('> ERROR: ' + e.message, 'red', 0);
+    addLine('> click anywhere to dismiss', 'dim', 400);
+    overlay.addEventListener('click', () => overlay.classList.remove('active'), { once: true });
+  }
 }
-
-function dismissOverlay() {
-  document.getElementById('accessOverlay').classList.remove('active');
-}
-document.getElementById('accessOverlay').addEventListener('click', (e) => {
-  if (e.target === document.getElementById('accessOverlay')) dismissOverlay();
-});
 </script>
 </body>
 </html>
