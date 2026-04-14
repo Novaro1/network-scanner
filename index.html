@@ -4,9 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>my website :)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/comic-neue@5/index.css">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
@@ -43,7 +42,7 @@
     z-index: 1;
     max-width: 680px;
     margin: 0 auto;
-    padding: 24px 16px 60px;
+    padding: 20px 16px 50px;
   }
 
   /* Header */
@@ -51,7 +50,7 @@
     text-align: center;
     margin-bottom: 6px;
     animation: rainbow 4s linear infinite;
-    font-size: clamp(28px, 7vw, 52px);
+    font-size: clamp(24px, 6vw, 46px);
     font-weight: 700;
     letter-spacing: 2px;
     text-shadow: 0 0 12px currentColor;
@@ -71,71 +70,68 @@
   .subtitle {
     text-align: center;
     color: #aaa;
-    font-size: 13px;
+    font-size: 12px;
     margin-bottom: 4px;
   }
 
   .construction {
     text-align: center;
-    font-size: 13px;
+    font-size: 12px;
     color: #fa0;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     animation: blink 1s step-end infinite;
   }
 
-  @keyframes blink {
-    50% { opacity: 0; }
-  }
+  @keyframes blink { 50% { opacity: 0; } }
 
   /* Visitor counter */
   .counter-box {
     background: #0a0a0a;
     border: 2px solid #0f0;
     border-radius: 4px;
-    padding: 10px 16px;
+    padding: 8px 16px;
     text-align: center;
-    margin-bottom: 18px;
+    margin-bottom: 14px;
     box-shadow: 0 0 10px #0f05;
   }
 
-  .counter-label { color: #555; font-size: 11px; margin-bottom: 4px; }
+  .counter-label { color: #555; font-size: 10px; margin-bottom: 3px; }
   .counter-digits {
     font-family: 'Courier New', monospace;
-    font-size: 28px;
+    font-size: 24px;
     color: #0f0;
     letter-spacing: 4px;
     text-shadow: 0 0 8px #0f0;
   }
 
-  /* Card style */
+  /* Card */
   .card {
     background: #0a0a0a;
     border: 1px solid #1a3a1a;
     border-radius: 4px;
-    padding: 14px 16px;
-    margin-bottom: 14px;
-    box-shadow: inset 0 0 20px #0f0 05;
+    padding: 12px 14px;
+    margin-bottom: 12px;
   }
 
   .card-title {
     color: #0f0;
-    font-size: 11px;
+    font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 2px;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     border-bottom: 1px solid #1a3a1a;
-    padding-bottom: 6px;
+    padding-bottom: 5px;
   }
 
-  /* DO NOT PRESS button */
-  .dnp-wrap { text-align: center; padding: 8px 0; }
+  /* DO NOT PRESS */
+  .dnp-wrap { text-align: center; padding: 6px 0; }
   #dnpBtn {
     background: #8a0000;
     color: #fff;
     border: 3px solid #f00;
-    padding: 16px 32px;
-    font-family: 'Comic Neue', cursive;
-    font-size: 20px;
+    padding: 12px 28px;
+    font-family: 'Comic Neue', 'Comic Sans MS', cursive;
+    font-size: 18px;
     font-weight: 700;
     cursor: pointer;
     border-radius: 8px;
@@ -153,23 +149,18 @@
   }
 
   #dnpMsg {
-    margin-top: 10px;
-    font-size: 13px;
+    margin-top: 8px;
+    font-size: 12px;
     color: #f84;
-    min-height: 20px;
+    min-height: 18px;
     text-align: center;
   }
 
   /* Now playing */
-  .now-playing {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+  .now-playing { display: flex; align-items: center; gap: 10px; }
 
   .vinyl {
-    width: 44px;
-    height: 44px;
+    width: 40px; height: 40px;
     border-radius: 50%;
     background: conic-gradient(#222 0deg, #333 45deg, #111 90deg, #444 135deg, #222 180deg, #111 225deg, #333 270deg, #222 315deg, #111 360deg);
     animation: spin 3s linear infinite;
@@ -183,7 +174,7 @@
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 12px; height: 12px;
+    width: 10px; height: 10px;
     border-radius: 50%;
     background: #0ff;
     box-shadow: 0 0 4px #0ff;
@@ -195,15 +186,9 @@
   }
 
   .track-info { flex: 1; }
-  .track-name { color: #0ff; font-size: 14px; font-weight: 700; }
-  .track-artist { color: #555; font-size: 11px; }
-  .track-bar {
-    height: 3px;
-    background: #1a1a1a;
-    border-radius: 2px;
-    margin-top: 6px;
-    overflow: hidden;
-  }
+  .track-name { color: #0ff; font-size: 13px; font-weight: 700; }
+  .track-artist { color: #555; font-size: 10px; }
+  .track-bar { height: 3px; background: #1a1a1a; border-radius: 2px; margin-top: 5px; overflow: hidden; }
   .track-fill {
     height: 100%;
     background: #0ff;
@@ -211,90 +196,102 @@
     box-shadow: 0 0 4px #0ff;
   }
 
-  @keyframes track-progress {
-    from { width: 30%; }
-    to   { width: 100%; }
-  }
+  @keyframes track-progress { from { width: 30%; } to { width: 100%; } }
 
   /* Deep thoughts */
-  #thought {
-    font-size: 14px;
-    color: #cf8;
-    font-style: italic;
-    line-height: 1.6;
-    min-height: 40px;
-    transition: opacity 0.5s;
-  }
-
-  .thought-attr { font-size: 11px; color: #555; margin-top: 6px; }
+  #thought { font-size: 13px; color: #cf8; font-style: italic; line-height: 1.5; min-height: 36px; }
+  .thought-attr { font-size: 10px; color: #555; margin-top: 4px; }
 
   /* Productivity */
   .prod-number {
-    font-size: 48px;
+    font-size: 42px;
     font-family: 'Courier New', monospace;
     color: #f84;
     text-align: center;
     text-shadow: 0 0 10px #f845;
     line-height: 1;
   }
-  .prod-label { text-align: center; color: #555; font-size: 11px; margin-top: 4px; }
+  .prod-label { text-align: center; color: #555; font-size: 10px; margin-top: 3px; }
 
   /* Guestbook */
-  .guestbook-entry {
-    border-bottom: 1px solid #1a1a1a;
-    padding: 6px 0;
-    font-size: 12px;
-  }
+  .guestbook-entry { border-bottom: 1px solid #1a1a1a; padding: 5px 0; font-size: 11px; }
   .guestbook-entry:last-child { border-bottom: none; }
   .gb-name { color: #0cf; font-weight: 700; }
   .gb-date { color: #444; font-size: 10px; margin-left: 6px; }
-  .gb-msg  { color: #888; margin-top: 2px; }
+  .gb-msg  { color: #888; margin-top: 1px; }
 
   /* Footer */
   footer {
     text-align: center;
     color: #333;
     font-size: 10px;
-    margin-top: 30px;
+    margin-top: 24px;
     line-height: 1.8;
   }
-
   footer a { color: #1a4a1a; text-decoration: none; }
+  .konami-hint { color: #1c1c1c; user-select: none; }
 
   /* Access overlay */
   #accessOverlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: #000;
+    background: #000e;
     z-index: 9999;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     font-family: 'Courier New', monospace;
+    padding: 20px;
   }
 
   #accessOverlay.active { display: flex; }
 
   .access-line {
-    font-size: clamp(14px, 3vw, 22px);
-    margin: 4px 0;
+    font-size: clamp(12px, 2.5vw, 20px);
+    margin: 3px 0;
     opacity: 0;
     animation: fade-in-line 0.4s forwards;
   }
 
-  .access-line.red   { color: #f44; text-shadow: 0 0 10px #f44; }
-  .access-line.green { color: #4f4; text-shadow: 0 0 10px #4f4; }
-  .access-line.cyan  { color: #0ff; text-shadow: 0 0 10px #0ff; }
+  .access-line.red   { color: #f44; text-shadow: 0 0 8px #f44; }
+  .access-line.green { color: #4f4; text-shadow: 0 0 8px #4f4; }
+  .access-line.cyan  { color: #0ff; text-shadow: 0 0 8px #0ff; }
   .access-line.white { color: #fff; }
 
   @keyframes fade-in-line {
-    from { opacity: 0; transform: translateX(-10px); }
+    from { opacity: 0; transform: translateX(-8px); }
     to   { opacity: 1; transform: translateX(0); }
   }
 
-  /* Konami hint in footer - tiny and easy to miss */
-  .konami-hint { color: #1a1a1a; user-select: none; }
+  /* Scanner link shown after konami */
+  #scannerLink {
+    display: none;
+    margin-top: 20px;
+    padding: 12px 28px;
+    background: #0a3a0a;
+    border: 2px solid #4f4;
+    border-radius: 6px;
+    color: #4f4;
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    letter-spacing: 1px;
+    box-shadow: 0 0 16px #4f46;
+    animation: pulse-green 1.2s ease-in-out infinite;
+    cursor: pointer;
+  }
+
+  #scannerLink:hover { background: #0f4a0f; }
+
+  @keyframes pulse-green {
+    0%, 100% { box-shadow: 0 0 16px #4f46; }
+    50%       { box-shadow: 0 0 32px #4f4a; }
+  }
+
+  .overlay-dismiss { margin-top: 12px; color: #333; font-size: 11px; cursor: pointer; }
+  .overlay-dismiss:hover { color: #555; }
 </style>
 </head>
 <body>
@@ -307,13 +304,11 @@
   <p class="subtitle">welcome to my corner of the internet. make yourself at home i guess</p>
   <p class="construction">🚧 UNDER CONSTRUCTION (since 2019) 🚧</p>
 
-  <!-- Visitor Counter -->
   <div class="counter-box">
     <div class="counter-label">YOU ARE VISITOR NUMBER</div>
     <div class="counter-digits" id="counterDigits">0000000</div>
   </div>
 
-  <!-- DO NOT PRESS -->
   <div class="card">
     <div class="card-title">⚠ important</div>
     <div class="dnp-wrap">
@@ -322,7 +317,6 @@
     <div id="dnpMsg"></div>
   </div>
 
-  <!-- Now Playing -->
   <div class="card">
     <div class="card-title">🎵 currently vibing to</div>
     <div class="now-playing">
@@ -335,21 +329,18 @@
     </div>
   </div>
 
-  <!-- Deep Thoughts -->
   <div class="card">
     <div class="card-title">💭 today's deep thought</div>
     <div id="thought"></div>
     <div class="thought-attr" id="thoughtAttr"></div>
   </div>
 
-  <!-- Productivity Counter -->
   <div class="card">
     <div class="card-title">📊 days since i did something productive</div>
     <div class="prod-number" id="prodDays">0</div>
     <div class="prod-label">(auto-resets. it's complicated.)</div>
   </div>
 
-  <!-- Guestbook -->
   <div class="card">
     <div class="card-title">📖 guestbook</div>
     <div class="guestbook-entry">
@@ -382,22 +373,22 @@
 <!-- Access Overlay -->
 <div id="accessOverlay">
   <div id="accessLines"></div>
+  <a id="scannerLink"
+     href="https://novaro1.github.io/network-scanner/scanner.html"
+     target="_blank" rel="noopener">
+    ▶ OPEN NETWORK SCANNER
+  </a>
+  <span class="overlay-dismiss" onclick="dismissOverlay()">[ click to close ]</span>
 </div>
 
 <script>
 // ── Stars ──────────────────────────────────────────────────────
 const starContainer = document.getElementById('stars');
-for (let i = 0; i < 120; i++) {
+for (let i = 0; i < 100; i++) {
   const s = document.createElement('div');
   s.className = 'star';
   const size = Math.random() * 2.5 + 0.5;
-  s.style.cssText = `
-    width:${size}px; height:${size}px;
-    top:${Math.random()*100}%;
-    left:${Math.random()*100}%;
-    --d:${(Math.random()*3+1).toFixed(1)}s;
-    animation-delay:${(Math.random()*3).toFixed(1)}s;
-  `;
+  s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${(Math.random()*3+1).toFixed(1)}s;animation-delay:${(Math.random()*3).toFixed(1)}s`;
   starContainer.appendChild(s);
 }
 
@@ -406,7 +397,7 @@ for (let i = 0; i < 120; i++) {
   const BASE = 1337042;
   let count = parseInt(localStorage.getItem('ns_visits') || String(BASE));
   count++;
-  localStorage.setItem('ns_visits', String(count));
+  try { localStorage.setItem('ns_visits', String(count)); } catch(_) {}
   document.getElementById('counterDigits').textContent = String(count).padStart(7, '0');
 })();
 
@@ -425,29 +416,25 @@ const dnpMessages = [
   "ok i respect the commitment at this point",
   "this is your life now",
 ];
-
 let dnpCount = 0;
 function pressButton() {
-  const msg = dnpMessages[Math.min(dnpCount, dnpMessages.length - 1)];
-  document.getElementById('dnpMsg').textContent = msg;
+  document.getElementById('dnpMsg').textContent = dnpMessages[Math.min(dnpCount, dnpMessages.length - 1)];
   dnpCount++;
 }
 
 // ── Now Playing ────────────────────────────────────────────────
 const playlist = [
-  { name: 'Midnight City',         artist: 'M83' },
-  { name: 'Lose Yourself to Dance',artist: 'Daft Punk' },
-  { name: 'Mr. Brightside',        artist: 'The Killers' },
-  { name: 'Africa',                artist: 'Toto' },
-  { name: 'Dreams',                artist: 'Fleetwood Mac' },
-  { name: 'Take On Me',            artist: 'a-ha' },
-  { name: 'Running Up That Hill',  artist: 'Kate Bush' },
-  { name: 'Electric Feel',         artist: 'MGMT' },
+  { name: 'Midnight City',          artist: 'M83' },
+  { name: 'Lose Yourself to Dance', artist: 'Daft Punk' },
+  { name: 'Mr. Brightside',         artist: 'The Killers' },
+  { name: 'Africa',                 artist: 'Toto' },
+  { name: 'Dreams',                 artist: 'Fleetwood Mac' },
+  { name: 'Take On Me',             artist: 'a-ha' },
+  { name: 'Running Up That Hill',   artist: 'Kate Bush' },
+  { name: 'Electric Feel',          artist: 'MGMT' },
 ];
-
 (function() {
-  const idx = Math.floor(Math.random() * playlist.length);
-  const { name, artist } = playlist[idx];
+  const { name, artist } = playlist[Math.floor(Math.random() * playlist.length)];
   document.getElementById('trackName').textContent = name;
   document.getElementById('trackArtist').textContent = artist;
 })();
@@ -462,7 +449,6 @@ const thoughts = [
   { q: "time is a flat circle. git blame confirms this.", a: "— me, again" },
   { q: "every ip address is just a phone number that's given up on relationships.", a: "— no one asked" },
 ];
-
 (function() {
   const { q, a } = thoughts[Math.floor(Math.random() * thoughts.length)];
   document.getElementById('thought').textContent = `"${q}"`;
@@ -471,27 +457,18 @@ const thoughts = [
 
 // ── Productivity Counter ───────────────────────────────────────
 (function() {
-  // Pick a random number 0–3 that changes each day
-  const day = new Date().toDateString();
-  const seed = [...day].reduce((a, c) => a + c.charCodeAt(0), 0);
+  const seed = [...new Date().toDateString()].reduce((a, c) => a + c.charCodeAt(0), 0);
   document.getElementById('prodDays').textContent = seed % 4;
 })();
 
-// ── Konami Code → Scanner ─────────────────────────────────────
-const KONAMI = [
-  'ArrowUp','ArrowUp','ArrowDown','ArrowDown',
-  'ArrowLeft','ArrowRight','ArrowLeft','ArrowRight',
-  'b','a'
-];
+// ── Konami Code ───────────────────────────────────────────────
+const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
 let konamiIdx = 0;
 
 document.addEventListener('keydown', (e) => {
   if (e.key === KONAMI[konamiIdx]) {
     konamiIdx++;
-    if (konamiIdx === KONAMI.length) {
-      konamiIdx = 0;
-      triggerAccess();
-    }
+    if (konamiIdx === KONAMI.length) { konamiIdx = 0; triggerAccess(); }
   } else {
     konamiIdx = e.key === KONAMI[0] ? 1 : 0;
   }
@@ -500,15 +477,17 @@ document.addEventListener('keydown', (e) => {
 function triggerAccess() {
   const overlay = document.getElementById('accessOverlay');
   const linesEl = document.getElementById('accessLines');
+  const linkEl  = document.getElementById('scannerLink');
   overlay.classList.add('active');
   linesEl.innerHTML = '';
+  linkEl.style.display = 'none';
 
   const lines = [
     { text: '> UNAUTHORIZED ACCESS DETECTED', cls: 'red',   delay: 0 },
     { text: '> SCANNING CREDENTIALS....',     cls: 'white', delay: 400 },
     { text: '> just kidding lol',             cls: 'cyan',  delay: 900 },
     { text: '> ACCESS GRANTED',               cls: 'green', delay: 1400 },
-    { text: '> launching network scanner...', cls: 'green', delay: 1900 },
+    { text: '> network scanner unlocked',     cls: 'green', delay: 1900 },
   ];
 
   lines.forEach(({ text, cls, delay }) => {
@@ -520,16 +499,15 @@ function triggerAccess() {
     }, delay);
   });
 
-  setTimeout(() => {
-    window.open('scanner.html', '_blank');
-    overlay.classList.remove('active');
-    linesEl.innerHTML = '';
-  }, 2600);
+  // Show the link button — works in iframes, no popup needed
+  setTimeout(() => { linkEl.style.display = 'inline-block'; }, 2400);
 }
 
-// Click overlay to dismiss if something went wrong
-document.getElementById('accessOverlay').addEventListener('click', () => {
+function dismissOverlay() {
   document.getElementById('accessOverlay').classList.remove('active');
+}
+document.getElementById('accessOverlay').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('accessOverlay')) dismissOverlay();
 });
 </script>
 </body>
