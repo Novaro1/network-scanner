@@ -132,6 +132,18 @@
     line-height: 1.6;
   }
   #summary { color: #0cf; margin-top: 6px; font-size: 13px; }
+  #httpsWarn {
+    display: none;
+    background: #2a0a0a;
+    border: 1px solid #a00;
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    font-size: 12px;
+    color: #f88;
+    line-height: 1.6;
+  }
+  #httpsWarn strong { color: #f44; }
   .concurrency-row {
     display: flex;
     align-items: center;
@@ -188,6 +200,15 @@
 <body>
 
 <h1>Network Scanner</h1>
+
+<div id="httpsWarn">
+  <strong>⚠ HTTPS context detected — HTTP scanning will not work.</strong><br>
+  Your browser blocks <code>http://</code> fetches from HTTPS pages (mixed content policy).
+  Every HTTP port probe will silently fail, so the scanner will find nothing.<br>
+  <strong>Fix:</strong> save <a href="scanner.html" download style="color:#f84">scanner.html</a>
+  and open it from <code>file://</code> on your local machine instead.
+  HTTPS targets (port 443 / 8443) will still respond if detected.
+</div>
 
 <div class="info-box">
   <div class="info-row"><span class="label">Your IP:  </span><span class="value" id="myip">detecting...</span></div>
@@ -371,17 +392,14 @@ function checkPort(ip, portInfo) {
   });
 }
 
-// --- Scan a single host, checking ports sequentially ---
-// Sequential = max 15 concurrent connections total (one per host slot),
-// instead of 15×17=255 which overwhelms the browser on dead hosts.
+// --- Scan a single host, probing all ports concurrently ---
+// All ports fire at once with a shared timeout, so a dead host costs only
+// TIMEOUT_MS instead of PORTS.length × TIMEOUT_MS.  The host-level
+// concurrency slider controls total load.
 async function scanHost(ip) {
-  const found = [];
-  for (const p of PORTS) {
-    if (aborted) break;
-    const ok = await checkPort(ip, p);
-    if (ok) found.push(p);
-  }
-  return found;
+  if (aborted) return [];
+  const results = await Promise.all(PORTS.map(p => aborted ? Promise.resolve(false) : checkPort(ip, p)));
+  return PORTS.filter((_, i) => results[i]);
 }
 
 // --- Concurrency limiter ---
@@ -687,6 +705,9 @@ function stopScan() {
 
 // --- Init: detect IP on load ---
 onConcurrencyChange(); // set initial hint
+if (location.protocol === 'https:') {
+  document.getElementById('httpsWarn').style.display = 'block';
+}
 (async () => {
   // Try saved IP first — fastest path
   const saved = localStorage.getItem('netscanner_ip');
