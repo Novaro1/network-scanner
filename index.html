@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>my website :)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Comic Neue', 'Comic Sans MS', cursive;
+    background: #000;
+    color: #0f0;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Star field */
+  #stars {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle var(--d) ease-in-out infinite alternate;
+  }
+
+  @keyframes twinkle {
+    from { opacity: 0.1; }
+    to   { opacity: 1; }
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+  }
+
+  /* Header */
+  .site-title {
+    text-align: center;
+    margin-bottom: 6px;
+    animation: rainbow 4s linear infinite;
+    font-size: clamp(28px, 7vw, 52px);
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-shadow: 0 0 12px currentColor;
+  }
+
+  @keyframes rainbow {
+    0%   { color: #f00; text-shadow: 0 0 12px #f00; }
+    14%  { color: #f80; text-shadow: 0 0 12px #f80; }
+    28%  { color: #ff0; text-shadow: 0 0 12px #ff0; }
+    42%  { color: #0f0; text-shadow: 0 0 12px #0f0; }
+    57%  { color: #0ff; text-shadow: 0 0 12px #0ff; }
+    71%  { color: #00f; text-shadow: 0 0 12px #00f; }
+    85%  { color: #f0f; text-shadow: 0 0 12px #f0f; }
+    100% { color: #f00; text-shadow: 0 0 12px #f00; }
+  }
+
+  .subtitle {
+    text-align: center;
+    color: #aaa;
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  .construction {
+    text-align: center;
+    font-size: 13px;
+    color: #fa0;
+    margin-bottom: 20px;
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  /* Visitor counter */
+  .counter-box {
+    background: #0a0a0a;
+    border: 2px solid #0f0;
+    border-radius: 4px;
+    padding: 10px 16px;
+    text-align: center;
+    margin-bottom: 18px;
+    box-shadow: 0 0 10px #0f05;
+  }
+
+  .counter-label { color: #555; font-size: 11px; margin-bottom: 4px; }
+  .counter-digits {
+    font-family: 'Courier New', monospace;
+    font-size: 28px;
+    color: #0f0;
+    letter-spacing: 4px;
+    text-shadow: 0 0 8px #0f0;
+  }
+
+  /* Card style */
+  .card {
+    background: #0a0a0a;
+    border: 1px solid #1a3a1a;
+    border-radius: 4px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    box-shadow: inset 0 0 20px #0f0 05;
+  }
+
+  .card-title {
+    color: #0f0;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #1a3a1a;
+    padding-bottom: 6px;
+  }
+
+  /* DO NOT PRESS button */
+  .dnp-wrap { text-align: center; padding: 8px 0; }
+  #dnpBtn {
+    background: #8a0000;
+    color: #fff;
+    border: 3px solid #f00;
+    padding: 16px 32px;
+    font-family: 'Comic Neue', cursive;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0 0 20px #f005, inset 0 0 10px #f002;
+    animation: pulse-red 1.5s ease-in-out infinite;
+    transition: transform 0.1s;
+  }
+
+  #dnpBtn:hover { transform: scale(1.04); }
+  #dnpBtn:active { transform: scale(0.96); }
+
+  @keyframes pulse-red {
+    0%, 100% { box-shadow: 0 0 20px #f005, inset 0 0 10px #f002; }
+    50%       { box-shadow: 0 0 40px #f00a, inset 0 0 20px #f005; }
+  }
+
+  #dnpMsg {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #f84;
+    min-height: 20px;
+    text-align: center;
+  }
+
+  /* Now playing */
+  .now-playing {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .vinyl {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: conic-gradient(#222 0deg, #333 45deg, #111 90deg, #444 135deg, #222 180deg, #111 225deg, #333 270deg, #222 315deg, #111 360deg);
+    animation: spin 3s linear infinite;
+    flex-shrink: 0;
+    box-shadow: 0 0 8px #0ff3;
+    position: relative;
+  }
+
+  .vinyl::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: #0ff;
+    box-shadow: 0 0 4px #0ff;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  .track-info { flex: 1; }
+  .track-name { color: #0ff; font-size: 14px; font-weight: 700; }
+  .track-artist { color: #555; font-size: 11px; }
+  .track-bar {
+    height: 3px;
+    background: #1a1a1a;
+    border-radius: 2px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+  .track-fill {
+    height: 100%;
+    background: #0ff;
+    animation: track-progress 180s linear infinite;
+    box-shadow: 0 0 4px #0ff;
+  }
+
+  @keyframes track-progress {
+    from { width: 30%; }
+    to   { width: 100%; }
+  }
+
+  /* Deep thoughts */
+  #thought {
+    font-size: 14px;
+    color: #cf8;
+    font-style: italic;
+    line-height: 1.6;
+    min-height: 40px;
+    transition: opacity 0.5s;
+  }
+
+  .thought-attr { font-size: 11px; color: #555; margin-top: 6px; }
+
+  /* Productivity */
+  .prod-number {
+    font-size: 48px;
+    font-family: 'Courier New', monospace;
+    color: #f84;
+    text-align: center;
+    text-shadow: 0 0 10px #f845;
+    line-height: 1;
+  }
+  .prod-label { text-align: center; color: #555; font-size: 11px; margin-top: 4px; }
+
+  /* Guestbook */
+  .guestbook-entry {
+    border-bottom: 1px solid #1a1a1a;
+    padding: 6px 0;
+    font-size: 12px;
+  }
+  .guestbook-entry:last-child { border-bottom: none; }
+  .gb-name { color: #0cf; font-weight: 700; }
+  .gb-date { color: #444; font-size: 10px; margin-left: 6px; }
+  .gb-msg  { color: #888; margin-top: 2px; }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    color: #333;
+    font-size: 10px;
+    margin-top: 30px;
+    line-height: 1.8;
+  }
+
+  footer a { color: #1a4a1a; text-decoration: none; }
+
+  /* Access overlay */
+  #accessOverlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 9999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Courier New', monospace;
+  }
+
+  #accessOverlay.active { display: flex; }
+
+  .access-line {
+    font-size: clamp(14px, 3vw, 22px);
+    margin: 4px 0;
+    opacity: 0;
+    animation: fade-in-line 0.4s forwards;
+  }
+
+  .access-line.red   { color: #f44; text-shadow: 0 0 10px #f44; }
+  .access-line.green { color: #4f4; text-shadow: 0 0 10px #4f4; }
+  .access-line.cyan  { color: #0ff; text-shadow: 0 0 10px #0ff; }
+  .access-line.white { color: #fff; }
+
+  @keyframes fade-in-line {
+    from { opacity: 0; transform: translateX(-10px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  /* Konami hint in footer - tiny and easy to miss */
+  .konami-hint { color: #1a1a1a; user-select: none; }
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+
+<div class="content">
+
+  <h1 class="site-title">✦ MY WEBSITE ✦</h1>
+  <p class="subtitle">welcome to my corner of the internet. make yourself at home i guess</p>
+  <p class="construction">🚧 UNDER CONSTRUCTION (since 2019) 🚧</p>
+
+  <!-- Visitor Counter -->
+  <div class="counter-box">
+    <div class="counter-label">YOU ARE VISITOR NUMBER</div>
+    <div class="counter-digits" id="counterDigits">0000000</div>
+  </div>
+
+  <!-- DO NOT PRESS -->
+  <div class="card">
+    <div class="card-title">⚠ important</div>
+    <div class="dnp-wrap">
+      <button id="dnpBtn" onclick="pressButton()">DO NOT PRESS</button>
+    </div>
+    <div id="dnpMsg"></div>
+  </div>
+
+  <!-- Now Playing -->
+  <div class="card">
+    <div class="card-title">🎵 currently vibing to</div>
+    <div class="now-playing">
+      <div class="vinyl"></div>
+      <div class="track-info">
+        <div class="track-name" id="trackName">Loading...</div>
+        <div class="track-artist" id="trackArtist"></div>
+        <div class="track-bar"><div class="track-fill"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Deep Thoughts -->
+  <div class="card">
+    <div class="card-title">💭 today's deep thought</div>
+    <div id="thought"></div>
+    <div class="thought-attr" id="thoughtAttr"></div>
+  </div>
+
+  <!-- Productivity Counter -->
+  <div class="card">
+    <div class="card-title">📊 days since i did something productive</div>
+    <div class="prod-number" id="prodDays">0</div>
+    <div class="prod-label">(auto-resets. it's complicated.)</div>
+  </div>
+
+  <!-- Guestbook -->
+  <div class="card">
+    <div class="card-title">📖 guestbook</div>
+    <div class="guestbook-entry">
+      <span class="gb-name">xX_c00l_d00d_Xx</span><span class="gb-date">Mar 4, 2019</span>
+      <div class="gb-msg">sick site bro. bookmarked</div>
+    </div>
+    <div class="guestbook-entry">
+      <span class="gb-name">totallynotabot</span><span class="gb-date">Jun 12, 2020</span>
+      <div class="gb-msg">GREAT WEBSITE!!! CHECK OUT MY SITE FOR FREE RINGTONES!!!</div>
+    </div>
+    <div class="guestbook-entry">
+      <span class="gb-name">mom</span><span class="gb-date">Jan 1, 2022</span>
+      <div class="gb-msg">honey why is this on the internet. also call me</div>
+    </div>
+    <div class="guestbook-entry">
+      <span class="gb-name">mysterious_stranger</span><span class="gb-date">??/??/????</span>
+      <div class="gb-msg">try the konami code ;)</div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2019–∞ &nbsp;|&nbsp; best viewed in Internet Explorer 6 at 800×600 &nbsp;|&nbsp;
+    <a href="#">report a bug</a> &nbsp;|&nbsp; <a href="#">contact webmaster</a><br>
+    <span class="konami-hint">↑↑↓↓←→←→BA</span><br>
+    no javascript was harmed in the making of this website (some was though)
+  </footer>
+
+</div>
+
+<!-- Access Overlay -->
+<div id="accessOverlay">
+  <div id="accessLines"></div>
+</div>
+
+<script>
+// ── Stars ──────────────────────────────────────────────────────
+const starContainer = document.getElementById('stars');
+for (let i = 0; i < 120; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const size = Math.random() * 2.5 + 0.5;
+  s.style.cssText = `
+    width:${size}px; height:${size}px;
+    top:${Math.random()*100}%;
+    left:${Math.random()*100}%;
+    --d:${(Math.random()*3+1).toFixed(1)}s;
+    animation-delay:${(Math.random()*3).toFixed(1)}s;
+  `;
+  starContainer.appendChild(s);
+}
+
+// ── Visitor Counter ────────────────────────────────────────────
+(function() {
+  const BASE = 1337042;
+  let count = parseInt(localStorage.getItem('ns_visits') || String(BASE));
+  count++;
+  localStorage.setItem('ns_visits', String(count));
+  document.getElementById('counterDigits').textContent = String(count).padStart(7, '0');
+})();
+
+// ── DO NOT PRESS ───────────────────────────────────────────────
+const dnpMessages = [
+  "i said don't.",
+  "why would you do that",
+  "please stop",
+  "i'm not mad, just disappointed",
+  "ok but what did you expect",
+  "there's literally nothing here",
+  "you're still pressing it aren't you",
+  "fine. i give up. press it forever for all i care.",
+  "...are you okay?",
+  "seriously though. stop.",
+  "ok i respect the commitment at this point",
+  "this is your life now",
+];
+
+let dnpCount = 0;
+function pressButton() {
+  const msg = dnpMessages[Math.min(dnpCount, dnpMessages.length - 1)];
+  document.getElementById('dnpMsg').textContent = msg;
+  dnpCount++;
+}
+
+// ── Now Playing ────────────────────────────────────────────────
+const playlist = [
+  { name: 'Midnight City',         artist: 'M83' },
+  { name: 'Lose Yourself to Dance',artist: 'Daft Punk' },
+  { name: 'Mr. Brightside',        artist: 'The Killers' },
+  { name: 'Africa',                artist: 'Toto' },
+  { name: 'Dreams',                artist: 'Fleetwood Mac' },
+  { name: 'Take On Me',            artist: 'a-ha' },
+  { name: 'Running Up That Hill',  artist: 'Kate Bush' },
+  { name: 'Electric Feel',         artist: 'MGMT' },
+];
+
+(function() {
+  const idx = Math.floor(Math.random() * playlist.length);
+  const { name, artist } = playlist[idx];
+  document.getElementById('trackName').textContent = name;
+  document.getElementById('trackArtist').textContent = artist;
+})();
+
+// ── Deep Thoughts ──────────────────────────────────────────────
+const thoughts = [
+  { q: "if a website falls on the internet and no one is around to visit it, does it make a sound?", a: "— me, 3am" },
+  { q: "we are all just packets in someone else's router.", a: "— ancient proverb (probably)" },
+  { q: "404: meaning not found.", a: "— philosophy dot txt" },
+  { q: "the real friends were the stack traces we ignored along the way.", a: "— senior dev, probably" },
+  { q: "what if the cloud is just someone else's problem?", a: "— it is" },
+  { q: "time is a flat circle. git blame confirms this.", a: "— me, again" },
+  { q: "every ip address is just a phone number that's given up on relationships.", a: "— no one asked" },
+];
+
+(function() {
+  const { q, a } = thoughts[Math.floor(Math.random() * thoughts.length)];
+  document.getElementById('thought').textContent = `"${q}"`;
+  document.getElementById('thoughtAttr').textContent = a;
+})();
+
+// ── Productivity Counter ───────────────────────────────────────
+(function() {
+  // Pick a random number 0–3 that changes each day
+  const day = new Date().toDateString();
+  const seed = [...day].reduce((a, c) => a + c.charCodeAt(0), 0);
+  document.getElementById('prodDays').textContent = seed % 4;
+})();
+
+// ── Konami Code → Scanner ─────────────────────────────────────
+const KONAMI = [
+  'ArrowUp','ArrowUp','ArrowDown','ArrowDown',
+  'ArrowLeft','ArrowRight','ArrowLeft','ArrowRight',
+  'b','a'
+];
+let konamiIdx = 0;
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === KONAMI[konamiIdx]) {
+    konamiIdx++;
+    if (konamiIdx === KONAMI.length) {
+      konamiIdx = 0;
+      triggerAccess();
+    }
+  } else {
+    konamiIdx = e.key === KONAMI[0] ? 1 : 0;
+  }
+});
+
+function triggerAccess() {
+  const overlay = document.getElementById('accessOverlay');
+  const linesEl = document.getElementById('accessLines');
+  overlay.classList.add('active');
+  linesEl.innerHTML = '';
+
+  const lines = [
+    { text: '> UNAUTHORIZED ACCESS DETECTED', cls: 'red',   delay: 0 },
+    { text: '> SCANNING CREDENTIALS....',     cls: 'white', delay: 400 },
+    { text: '> just kidding lol',             cls: 'cyan',  delay: 900 },
+    { text: '> ACCESS GRANTED',               cls: 'green', delay: 1400 },
+    { text: '> launching network scanner...', cls: 'green', delay: 1900 },
+  ];
+
+  lines.forEach(({ text, cls, delay }) => {
+    setTimeout(() => {
+      const div = document.createElement('div');
+      div.className = `access-line ${cls}`;
+      div.textContent = text;
+      linesEl.appendChild(div);
+    }, delay);
+  });
+
+  setTimeout(() => {
+    window.open('scanner.html', '_blank');
+    overlay.classList.remove('active');
+    linesEl.innerHTML = '';
+  }, 2600);
+}
+
+// Click overlay to dismiss if something went wrong
+document.getElementById('accessOverlay').addEventListener('click', () => {
+  document.getElementById('accessOverlay').classList.remove('active');
+});
+</script>
+</body>
+</html>

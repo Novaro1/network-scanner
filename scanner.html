@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Network Scanner</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: monospace;
+    background: #111;
+    color: #ccc;
+    padding: 24px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  h1 { color: #fff; margin-bottom: 16px; font-size: 20px; }
+  .info-box {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border-radius: 4px;
+  }
+  .info-row { margin: 4px 0; }
+  .label { color: #888; }
+  .value { color: #0cf; }
+  .ip-input-row { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+  input[type="text"] {
+    background: #222;
+    border: 1px solid #444;
+    color: #ccc;
+    padding: 5px 10px;
+    font-family: monospace;
+    font-size: 13px;
+    width: 160px;
+    border-radius: 3px;
+  }
+  button {
+    background: #0a7a0a;
+    color: #fff;
+    border: none;
+    padding: 7px 16px;
+    cursor: pointer;
+    font-family: monospace;
+    font-size: 13px;
+    border-radius: 3px;
+  }
+  button:hover:not(:disabled) { background: #0c9c0c; }
+  button:disabled { background: #333; color: #666; cursor: default; }
+  #stopBtn { background: #7a1010; display: none; }
+  #stopBtn:hover:not(:disabled) { background: #9c1212; }
+  .controls { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+  #progress {
+    color: #888;
+    font-size: 12px;
+  }
+  .progress-bar-wrap {
+    background: #222;
+    border: 1px solid #333;
+    height: 6px;
+    border-radius: 3px;
+    margin: 8px 0;
+    display: none;
+  }
+  .progress-bar {
+    background: #0a7a0a;
+    height: 100%;
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.3s;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    font-size: 13px;
+  }
+  th {
+    background: #1e1e1e;
+    color: #aaa;
+    padding: 8px 12px;
+    text-align: left;
+    border: 1px solid #2a2a2a;
+    font-weight: normal;
+    letter-spacing: 0.05em;
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+  td {
+    padding: 7px 12px;
+    border: 1px solid #1e1e1e;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: #141414; }
+  tr:hover td { background: #1a2a1a; }
+  .tag {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-size: 11px;
+    margin: 1px 1px 1px 0;
+    font-weight: bold;
+  }
+  .tag-http  { background: #0a4a0a; color: #4f4; border: 1px solid #0f0; }
+  .tag-https { background: #0a3a5a; color: #4af; border: 1px solid #08f; }
+  .tag-alt   { background: #4a3a00; color: #fa4; border: 1px solid #fa0; }
+  .links a {
+    display: block;
+    color: #8af;
+    text-decoration: none;
+    font-size: 12px;
+    margin: 1px 0;
+  }
+  .links a:hover { text-decoration: underline; }
+  #log {
+    margin-top: 14px;
+    height: 100px;
+    overflow-y: auto;
+    font-size: 11px;
+    color: #555;
+    border: 1px solid #1e1e1e;
+    padding: 6px 10px;
+    border-radius: 3px;
+    background: #0d0d0d;
+  }
+  #log .found { color: #4f4; }
+  #log .info  { color: #555; }
+  .note {
+    font-size: 11px;
+    color: #555;
+    margin-top: 10px;
+    line-height: 1.6;
+  }
+  #summary { color: #0cf; margin-top: 6px; font-size: 13px; }
+  .concurrency-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .concurrency-row input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 160px;
+    height: 4px;
+    background: #333;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+  .concurrency-row input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #0cf;
+    cursor: pointer;
+  }
+  .concurrency-hint {
+    font-size: 11px;
+    color: #666;
+  }
+  .concurrency-hint .acc { color: #4f4; }
+  .concurrency-hint .spd { color: #fa4; }
+  .resume-banner {
+    background: #1a2a1a;
+    border: 1px solid #2a4a2a;
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
+  .resume-banner .resume-info { color: #8d8; flex: 1; min-width: 200px; }
+  .resume-banner .resume-info strong { color: #4f4; }
+  .resume-banner .resume-info .ts { color: #555; margin-left: 6px; }
+  #resumeBtn { background: #1a5a1a; padding: 5px 12px; font-size: 12px; }
+  #resumeBtn:hover:not(:disabled) { background: #1e7a1e; }
+  #discardBtn { background: #3a2a00; color: #fa4; padding: 5px 12px; font-size: 12px; }
+  #discardBtn:hover { background: #4a3800; }
+</style>
+</head>
+<body>
+
+<h1>Network Scanner</h1>
+
+<div class="info-box">
+  <div class="info-row"><span class="label">Your IP:  </span><span class="value" id="myip">detecting...</span></div>
+  <div class="info-row"><span class="label">Subnet:   </span><span class="value" id="subnet">—</span></div>
+  <div class="info-row" style="margin-top:8px">
+    <span class="label" style="font-size:12px">Subnet size: </span>
+    <select id="cidr" onchange="onCidrChange()" style="background:#222;border:1px solid #444;color:#ccc;font-family:monospace;font-size:12px;padding:3px 6px;border-radius:3px;">
+      <option value="24">/24 — 254 hosts (home network)</option>
+      <option value="23">/23 — 510 hosts</option>
+      <option value="22">/22 — 1,022 hosts</option>
+      <option value="21">/21 — 2,046 hosts</option>
+      <option value="20">/20 — 4,094 hosts</option>
+      <option value="16">/16 — 65,534 hosts (large network, slow)</option>
+    </select>
+  </div>
+  <div class="ip-input-row">
+    <span class="label" style="font-size:12px">Override IP:</span>
+    <input type="text" id="ipOverride" placeholder="e.g. 192.168.1.5">
+    <button onclick="applyOverride()">Use This</button>
+  </div>
+  <div class="concurrency-row">
+    <span class="label" style="font-size:12px">Concurrency:</span>
+    <input type="range" id="concurrencySlider" min="1" max="200" value="50" oninput="onConcurrencyChange()">
+    <span class="value" id="concurrencyVal" style="font-size:12px;min-width:28px">50</span>
+    <span class="concurrency-hint" id="concurrencyHint"></span>
+  </div>
+</div>
+
+<div id="resumeBanner" style="display:none" class="resume-banner">
+  <span class="resume-info" id="resumeInfo"></span>
+  <button id="resumeBtn" onclick="resumeScan()">Resume Scan</button>
+  <button id="discardBtn" onclick="discardCheckpoint()">Discard</button>
+</div>
+
+<div class="controls">
+  <button id="scanBtn" onclick="startScan(0, [])">Scan Network</button>
+  <button id="stopBtn" onclick="stopScan()">Stop</button>
+  <span id="progress"></span>
+</div>
+<div class="controls" style="margin-top:6px;">
+  <span class="label" style="font-size:12px">Test single host:</span>
+  <input type="text" id="testHost" placeholder="192.168.4.64:8080" style="width:180px">
+  <button onclick="testSingleHost()">Test</button>
+  <span id="testResult" style="font-size:12px;margin-left:8px;"></span>
+</div>
+<div class="progress-bar-wrap" id="progressWrap">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<div id="summary"></div>
+<table id="results" style="display:none">
+  <thead>
+    <tr>
+      <th>IP Address</th>
+      <th>Services Found</th>
+      <th>Open Links</th>
+    </tr>
+  </thead>
+  <tbody id="tbody"></tbody>
+</table>
+
+<div id="log"></div>
+
+<div class="note">
+  Note: Browser-based scanning can only detect HTTP/HTTPS servers (no raw ICMP ping).<br>
+  Devices without a web server (printers, phones, etc.) will not appear.<br>
+  Open this file locally (file://) for best results — avoid serving over HTTPS to scan HTTP targets.
+</div>
+
+<script>
+// Ports to probe per host
+const PORTS = [
+  { port: 80,   label: 'HTTP',       tag: 'http',  scheme: 'http'  },
+  { port: 443,  label: 'HTTPS',      tag: 'https', scheme: 'https' },
+  { port: 8080, label: 'HTTP-8080',  tag: 'alt',   scheme: 'http'  },
+  { port: 8443, label: 'HTTPS-8443', tag: 'alt',   scheme: 'https' },
+  { port: 3000, label: ':3000',      tag: 'alt',   scheme: 'http'  },
+  { port: 3001, label: ':3001',      tag: 'alt',   scheme: 'http'  },
+  { port: 4000, label: ':4000',      tag: 'alt',   scheme: 'http'  },
+  { port: 5000, label: ':5000',      tag: 'alt',   scheme: 'http'  },
+  { port: 8000, label: ':8000',      tag: 'alt',   scheme: 'http'  },
+  { port: 8888, label: ':8888',      tag: 'alt',   scheme: 'http'  },
+  { port: 9000, label: ':9000',      tag: 'alt',   scheme: 'http'  },
+  { port: 9090, label: ':9090',      tag: 'alt',   scheme: 'http'  },
+  { port: 1880, label: 'Node-RED',   tag: 'alt',   scheme: 'http'  },
+  { port: 5601, label: 'Kibana',     tag: 'alt',   scheme: 'http'  },
+  { port: 6443, label: 'K8s',        tag: 'alt',   scheme: 'https' },
+  { port: 7070, label: ':7070',      tag: 'alt',   scheme: 'http'  },
+  { port: 9200, label: 'Elastic',    tag: 'alt',   scheme: 'http'  },
+];
+
+const TIMEOUT_MS = 1500;
+
+let aborted = false;
+let baseIP = null;
+
+// --- Logging ---
+function log(msg, cls = 'info') {
+  const el = document.getElementById('log');
+  const line = document.createElement('div');
+  line.className = cls;
+  line.textContent = msg;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+}
+
+// --- WebRTC IP detection ---
+// Tries with STUN first (requires internet), falls back to no-STUN
+function getLocalIP() {
+  const stunServers = [
+    [{ urls: 'stun:stun.l.google.com:19302' }],
+    [{ urls: 'stun:stun1.l.google.com:19302' }],
+    [], // no STUN — host candidates only
+  ];
+
+  function tryWith(iceServers) {
+    return new Promise((resolve, reject) => {
+      let pc;
+      try {
+        pc = new RTCPeerConnection({ iceServers });
+      } catch (e) {
+        return reject(e);
+      }
+      pc.createDataChannel('');
+      const seen = new Set();
+      const IS_PRIVATE = /^(10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.)/;
+      const done = (ip) => { clearTimeout(timer); try { pc.close(); } catch(_){} resolve(ip); };
+
+      const timer = setTimeout(() => {
+        try { pc.close(); } catch(_){}
+        if (seen.size > 0) resolve([...seen][0]);
+        else reject(new Error('timeout'));
+      }, 4000);
+
+      pc.onicecandidate = (e) => {
+        if (!e.candidate) {
+          // gathering complete — take best private IP found
+          if (seen.size > 0) done([...seen][0]);
+          return;
+        }
+        const cand = e.candidate.candidate;
+        // Only accept 'typ host' — skip srflx/relay which give public IPs
+        if (!cand.includes('typ host')) return;
+        const m = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/.exec(cand);
+        if (!m) return;
+        const ip = m[1];
+        // Must be a private RFC-1918 address
+        if (!IS_PRIVATE.test(ip)) return;
+        seen.add(ip);
+        done(ip); // resolve immediately on first valid private host candidate
+      };
+      pc.onicecandidateerror = () => {};
+      pc.createOffer()
+        .then(o => pc.setLocalDescription(o))
+        .catch(err => { clearTimeout(timer); try { pc.close(); } catch(_){} reject(err); });
+    });
+  }
+
+  // Try each config in sequence, stopping at first success
+  return stunServers.reduce(
+    (chain, servers) => chain.catch(() => tryWith(servers)),
+    Promise.reject(new Error('start'))
+  );
+}
+
+// --- Port check via fetch no-cors ---
+function checkPort(ip, portInfo) {
+  return new Promise((resolve) => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => { controller.abort(); resolve(false); }, TIMEOUT_MS);
+    const url = `${portInfo.scheme}://${ip}:${portInfo.port}/`;
+    fetch(url, { mode: 'no-cors', signal: controller.signal, cache: 'no-store' })
+      .then(() => {
+        clearTimeout(timer);
+        resolve(true); // opaque response = something responded
+      })
+      .catch((err) => {
+        clearTimeout(timer);
+        resolve(false);
+      });
+  });
+}
+
+// --- Scan a single host, checking ports sequentially ---
+// Sequential = max 15 concurrent connections total (one per host slot),
+// instead of 15×17=255 which overwhelms the browser on dead hosts.
+async function scanHost(ip) {
+  const found = [];
+  for (const p of PORTS) {
+    if (aborted) break;
+    const ok = await checkPort(ip, p);
+    if (ok) found.push(p);
+  }
+  return found;
+}
+
+// --- Concurrency limiter ---
+async function pLimit(tasks, limit) {
+  const results = [];
+  let idx = 0;
+  async function worker() {
+    while (idx < tasks.length) {
+      if (aborted) break;
+      const i = idx++;
+      results[i] = await tasks[i]();
+    }
+  }
+  const workers = Array.from({ length: Math.min(limit, tasks.length) }, worker);
+  await Promise.all(workers);
+  return results;
+}
+
+// --- Add a row to results table ---
+function addRow(ip, services, isOwn) {
+  const tbody = document.getElementById('tbody');
+  document.getElementById('results').style.display = 'table';
+  const tr = document.createElement('tr');
+
+  const tags = services.map(s =>
+    `<span class="tag tag-${s.tag}">${s.label}</span>`
+  ).join('');
+
+  const links = services.map(s =>
+    `<a href="${s.scheme}://${ip}:${s.port}" target="_blank" rel="noopener">${s.scheme}://${ip}:${s.port}</a>`
+  ).join('');
+
+  const ipDisplay = isOwn ? `${ip} <span style="color:#fa0;font-size:11px">(you)</span>` : ip;
+  tr.innerHTML = `<td>${ipDisplay}</td><td>${tags}</td><td class="links">${links}</td>`;
+  tbody.appendChild(tr);
+}
+
+// --- Override IP ---
+function applyOverride() {
+  const val = document.getElementById('ipOverride').value.trim();
+  if (/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(val)) {
+    localStorage.setItem('netscanner_ip', val);
+    setDetectedIP(val);
+  } else {
+    alert('Invalid IP address format');
+  }
+}
+
+// --- CIDR helpers ---
+function ipToInt(ip) {
+  return ip.split('.').reduce((acc, o) => (acc << 8) + parseInt(o), 0) >>> 0;
+}
+function intToIp(n) {
+  return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.');
+}
+function cidrToRange(ip, prefix) {
+  const mask = prefix === 0 ? 0 : (~0 << (32 - prefix)) >>> 0;
+  const network = (ipToInt(ip) & mask) >>> 0;
+  const first = (network + 1) >>> 0;
+  const last  = ((network | (~mask >>> 0)) >>> 0) - 1;
+  return { first, last, count: last - first + 1, networkStr: intToIp(network) };
+}
+function getSelectedCidr() {
+  return parseInt(document.getElementById('cidr').value, 10);
+}
+function updateSubnetDisplay() {
+  if (!baseIP) return;
+  const prefix = getSelectedCidr();
+  const { count, networkStr } = cidrToRange(baseIP, prefix);
+  document.getElementById('subnet').textContent =
+    `${networkStr}/${prefix}  (${count.toLocaleString()} hosts)`;
+}
+function onCidrChange() {
+  updateSubnetDisplay();
+  checkForResume();
+}
+
+function getConcurrency() {
+  return parseInt(document.getElementById('concurrencySlider').value, 10);
+}
+
+function onConcurrencyChange() {
+  const v = getConcurrency();
+  document.getElementById('concurrencyVal').textContent = v;
+  const hint = document.getElementById('concurrencyHint');
+  if (v <= 10) {
+    hint.innerHTML = '<span class="acc">High accuracy</span> — slower, fewer missed hosts';
+  } else if (v <= 40) {
+    hint.innerHTML = '<span class="acc">Good accuracy</span> — balanced';
+  } else if (v <= 80) {
+    hint.innerHTML = 'Balanced speed/accuracy';
+  } else if (v <= 130) {
+    hint.innerHTML = '<span class="spd">Faster</span> — may miss some hosts under load';
+  } else {
+    hint.innerHTML = '<span class="spd">Max speed</span> — least accurate, best for large subnets';
+  }
+}
+
+function setDetectedIP(ip) {
+  baseIP = ip;
+  document.getElementById('myip').textContent = ip;
+  updateSubnetDisplay();
+}
+
+// --- Checkpoint save/load/clear ---
+const CHECKPOINT_KEY = 'netscanner_checkpoint';
+const CHECKPOINT_INTERVAL = 10; // save every N completed hosts
+
+function saveCheckpoint(doneCount, total, prefix, foundList) {
+  const data = {
+    baseIP,
+    prefix,
+    doneCount,
+    total,
+    found: foundList.map(f => ({ ip: f.ip, services: f.services })),
+    savedAt: new Date().toISOString(),
+  };
+  try { localStorage.setItem(CHECKPOINT_KEY, JSON.stringify(data)); } catch(_) {}
+}
+
+function clearCheckpoint() {
+  localStorage.removeItem(CHECKPOINT_KEY);
+}
+
+function loadCheckpoint() {
+  try {
+    const raw = localStorage.getItem(CHECKPOINT_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch(_) { return null; }
+}
+
+function checkpointMatchesCurrent(cp) {
+  if (!cp || !baseIP) return false;
+  const prefix = getSelectedCidr();
+  // Must match same base network (not necessarily same host IP)
+  const mask = prefix === 0 ? 0 : (~0 << (32 - prefix)) >>> 0;
+  const curNet = (ipToInt(baseIP) & mask) >>> 0;
+  const cpNet  = (ipToInt(cp.baseIP) & mask) >>> 0;
+  return cp.prefix === prefix && curNet === cpNet && cp.doneCount < cp.total;
+}
+
+function showResumeBanner(cp) {
+  const pct = Math.round(cp.doneCount / cp.total * 100);
+  const ts = new Date(cp.savedAt).toLocaleString();
+  document.getElementById('resumeInfo').innerHTML =
+    `Saved scan: <strong>${cp.doneCount.toLocaleString()}/${cp.total.toLocaleString()} hosts</strong> (${pct}%) &mdash; ` +
+    `${cp.found.length} device(s) found <span class="ts">· saved ${ts}</span>`;
+  document.getElementById('resumeBanner').style.display = 'flex';
+}
+
+function hideResumeBanner() {
+  document.getElementById('resumeBanner').style.display = 'none';
+}
+
+function discardCheckpoint() {
+  clearCheckpoint();
+  hideResumeBanner();
+  log('Saved scan discarded.');
+}
+
+function resumeScan() {
+  const cp = loadCheckpoint();
+  if (!cp) return;
+  hideResumeBanner();
+  // Pre-populate CIDR select to match checkpoint
+  document.getElementById('cidr').value = String(cp.prefix);
+  updateSubnetDisplay();
+  startScan(cp.doneCount, cp.found);
+}
+
+function checkForResume() {
+  const cp = loadCheckpoint();
+  if (checkpointMatchesCurrent(cp)) showResumeBanner(cp);
+  else hideResumeBanner();
+}
+
+// --- Single host test ---
+async function testSingleHost() {
+  const val = document.getElementById('testHost').value.trim();
+  const resultEl = document.getElementById('testResult');
+  const m = /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}):(\d+)$/.exec(val);
+  if (!m) { resultEl.style.color = '#f44'; resultEl.textContent = 'Format: ip:port'; return; }
+  const [, ip, port] = m;
+  resultEl.style.color = '#888';
+  resultEl.textContent = 'Testing...';
+  const scheme = port === '443' || port === '8443' ? 'https' : 'http';
+  const found = await checkPort(ip, { port: parseInt(port), scheme });
+  if (found) {
+    resultEl.style.color = '#4f4';
+    resultEl.textContent = `Found — server responding on ${scheme}://${ip}:${port}`;
+  } else {
+    resultEl.style.color = '#f84';
+    resultEl.textContent = `Not found — no response within ${TIMEOUT_MS}ms`;
+  }
+}
+
+// --- Main scan ---
+// resumeFrom: number of IPs to skip (already scanned in a prior session)
+// preloadedFound: array of {ip, services} from a saved checkpoint
+async function startScan(resumeFrom = 0, preloadedFound = []) {
+  if (!baseIP) {
+    alert('No IP detected. Enter one manually above.');
+    return;
+  }
+  aborted = false;
+  hideResumeBanner();
+  document.getElementById('scanBtn').disabled = true;
+  document.getElementById('stopBtn').style.display = 'inline-block';
+  document.getElementById('tbody').innerHTML = '';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('log').innerHTML = '';
+  document.getElementById('summary').textContent = '';
+  document.getElementById('progressWrap').style.display = 'block';
+
+  const prefix = getSelectedCidr();
+  const { first, last, count, networkStr } = cidrToRange(baseIP, prefix);
+  const allIps = [];
+  for (let n = first; n <= last; n++) allIps.push(intToIp(n));
+  const total = allIps.length;
+
+  // Track all found results across both preloaded and new discoveries
+  const foundList = preloadedFound.map(f => ({ ip: f.ip, services: f.services }));
+
+  // Restore preloaded results into the table
+  if (preloadedFound.length > 0) {
+    for (const { ip, services } of preloadedFound) {
+      // Re-attach port metadata from PORTS so tags render correctly
+      const resolved = services.map(s => PORTS.find(p => p.port === s.port) || s);
+      addRow(ip, resolved, ip === baseIP);
+    }
+    log(`Resumed — restored ${preloadedFound.length} previously found device(s).`, 'found');
+  }
+
+  // IPs still to scan
+  const ips = allIps.slice(resumeFrom);
+  let done = resumeFrom;
+  let found = preloadedFound.length;
+
+  // Set initial progress bar to show prior work
+  const initPct = total > 0 ? Math.round(resumeFrom / total * 100) : 0;
+  document.getElementById('progressBar').style.width = initPct + '%';
+  document.getElementById('progress').textContent = resumeFrom > 0
+    ? `Resuming from ${resumeFrom}/${total}  (${initPct}%)`
+    : '';
+
+  const concurrency = getConcurrency();
+
+  if (resumeFrom > 0) {
+    log(`Resuming ${networkStr}/${prefix} — skipping first ${resumeFrom.toLocaleString()} hosts | ${ips.length.toLocaleString()} remaining | concurrency: ${concurrency}`);
+  } else {
+    if (prefix <= 20) log(`Warning: scanning ${total.toLocaleString()} hosts — this will take a while. Use Stop to abort early.`);
+    log(`Scanning ${networkStr}/${prefix} (${total.toLocaleString()} hosts) | ${PORTS.length} ports each | concurrency: ${concurrency}`);
+    clearCheckpoint();
+  }
+
+  const tasks = ips.map(ip => async () => {
+    if (aborted) return;
+    const services = await scanHost(ip);
+    done++;
+    const pct = Math.round(done / total * 100);
+    document.getElementById('progress').textContent = `${done}/${total}  (${pct}%)`;
+    document.getElementById('progressBar').style.width = pct + '%';
+    if (services.length > 0) {
+      found++;
+      foundList.push({ ip, services });
+      log(`FOUND  ${ip}  →  ${services.map(s => s.label).join(', ')}`, 'found');
+      addRow(ip, services, ip === baseIP);
+    }
+    // Checkpoint every N completed hosts
+    if ((done - resumeFrom) % CHECKPOINT_INTERVAL === 0) {
+      saveCheckpoint(done, total, prefix, foundList);
+    }
+  });
+
+  await pLimit(tasks, concurrency);
+
+  document.getElementById('scanBtn').disabled = false;
+  document.getElementById('stopBtn').style.display = 'none';
+
+  if (aborted) {
+    // Save checkpoint so user can resume
+    saveCheckpoint(done, total, prefix, foundList);
+    document.getElementById('progress').textContent = `Stopped at ${done}/${total} — progress saved`;
+    showResumeBanner(loadCheckpoint());
+  } else {
+    clearCheckpoint();
+    document.getElementById('progress').textContent = `Done — ${total} hosts scanned`;
+  }
+
+  document.getElementById('summary').textContent = found > 0
+    ? `Found ${found} device(s) with HTTP servers.`
+    : 'No HTTP servers found on the subnet.';
+  if (found === 0) {
+    document.getElementById('results').style.display = 'none';
+  }
+}
+
+function stopScan() {
+  aborted = true;
+  document.getElementById('stopBtn').style.display = 'none';
+}
+
+// --- Init: detect IP on load ---
+onConcurrencyChange(); // set initial hint
+(async () => {
+  // Try saved IP first — fastest path
+  const saved = localStorage.getItem('netscanner_ip');
+  if (saved) {
+    setDetectedIP(saved);
+    document.getElementById('ipOverride').value = saved;
+    log(`Using saved IP: ${saved}`);
+    checkForResume();
+    return;
+  }
+
+  // Fall back to WebRTC
+  try {
+    const ip = await getLocalIP();
+    setDetectedIP(ip);
+    localStorage.setItem('netscanner_ip', ip);
+    log(`Detected local IP: ${ip}`);
+    checkForResume();
+  } catch (e) {
+    document.getElementById('myip').textContent = 'Not detected';
+    document.getElementById('subnet').textContent = '—';
+    log(`Auto-detect failed. Run this in Terminal to find your IP:`);
+    log(`  ipconfig getifaddr en0`);
+    log(`Then enter it in the Override IP field above.`);
+    // Focus the input so user can type right away
+    document.getElementById('ipOverride').focus();
+  }
+})();
+</script>
+</body>
+</html>
